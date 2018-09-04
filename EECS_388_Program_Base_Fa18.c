@@ -55,9 +55,16 @@ int main( void ) {
 	//	Start FreeRTOS Task Scheduler
 	//
 	vTaskStartScheduler();
-
+	//create task for the ten microseconds
+	//create task for storing in heap
+	//create task for reporting results
 	while ( 1 ) {
-
+	        //Zero heap
+	        //loop for one minute
+	            //grab current memory address
+	            //store in heap
+	            //wait 10 micro seconds
+	        //report results
 	}
 
 }
