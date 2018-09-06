@@ -60,6 +60,10 @@ extern void vPortSVCHandler(void);
 extern void xPortSysTickHandler(void);
 extern void vEMAC_ISR(void);
 
+//MAY NEED FOR TASK_TIMER
+//extern void Timer_0_A_ISR();
+
+
 //extern void SaveGeneralRegisters();
 //extern void SaveFloatingPointRegisters();
 

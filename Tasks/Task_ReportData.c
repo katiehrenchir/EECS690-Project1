@@ -126,56 +126,55 @@ extern void Task_ReportData( void *pvParameters ) {
 					//	Value type is float
 					//
 					sprintf( FormattedStrings[Value_Idx], "%+#8.3F", Values[Value_Idx].Float );
-					} else {
+				} else {
 
 					//
 					//	Value type is int32_t
 					//
 					sprintf( FormattedStrings[Value_Idx], "%+#08d", Values[Value_Idx].Integer );
-					}
+				}
 
 			}
 
 
-					switch ( ReportData_CurrentFormat ) {
+			switch ( ReportData_CurrentFormat ) {
 
-						//
-						//	Output in Excel Comma Separated format
-						//
-						case Excel_CSV:
-							UARTprintf( "%08d,%04d,%s,%s,%s,%s\n",
-										theReport.TimeStamp, theReport.ReportName,
-										FormattedStrings[0], FormattedStrings[1],
-										FormattedStrings[2], FormattedStrings[3] );
-							break;
+				//
+				//	Output in Excel Comma Separated format
+				//
+				case Excel_CSV:
+					UARTprintf( "%08d,%04d,%s,%s,%s,%s\n",
+								theReport.TimeStamp, theReport.ReportName,
+								FormattedStrings[0], FormattedStrings[1],
+								FormattedStrings[2], FormattedStrings[3] );
+					break;
 
-						//
-						//	Output in Mathematica List format
-						//
-						case Mathematica_List:
-							UARTprintf( "{ %08d, %04d, %s, %s, %s, %s },\n",
-										theReport.TimeStamp, theReport.ReportName,
-										FormattedStrings[0], FormattedStrings[1],
-										FormattedStrings[2], FormattedStrings[3] );
+				//
+				//	Output in Mathematica List format
+				//
+				case Mathematica_List:
+					UARTprintf( "{ %08d, %04d, %s, %s, %s, %s },\n",
+								theReport.TimeStamp, theReport.ReportName,
+								FormattedStrings[0], FormattedStrings[1],
+								FormattedStrings[2], FormattedStrings[3] );
+					break;
 
-							break;
+				//
+				//	Output in C white space format
+				//
+				case C_Format:
+					UARTprintf( "%08d %04d %s %s %s %s\n",
+								theReport.TimeStamp, theReport.ReportName,
+								FormattedStrings[0], FormattedStrings[1],
+								FormattedStrings[2], FormattedStrings[3] );
+					break;
 
-						//
-						//	Output in C white space format
-						//
-						case C_Format:
-							UARTprintf( "%08d %04d %s %s %s %s\n",
-										theReport.TimeStamp, theReport.ReportName,
-										FormattedStrings[0], FormattedStrings[1],
-										FormattedStrings[2], FormattedStrings[3] );
-							break;
+			}
 
-					}
-
-				}
+		} //end if
 
 		vTaskDelay( 100 );
 
-	}
+	} //end while
 
 }

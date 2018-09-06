@@ -65,6 +65,7 @@ int main( void ) {
 	            //store in heap
 	            //wait 10 micro seconds
 	        //report results
+	        Task_ReportData();
 	}
 
 }
