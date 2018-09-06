@@ -54,11 +54,13 @@ int main( void ) {
 	//
 	//	Start FreeRTOS Task Scheduler
 	//
-	vTaskStartScheduler();
+	vTaskStartScheduler(); //should never come back
+	//in ISR don't allocate local data *****
+	//TASK ISR and main portion *******
 	//create task for the ten microseconds
 	//create task for storing in heap
 	//create task for reporting results
-	while ( 1 ) {
+	while ( 1 ) { //Should never reach this while loop :(
 	        //Zero heap
 	        //loop for one minute
 	            //grab current memory address
