@@ -10,9 +10,9 @@
  *  				Changed number of value to 4 from 2.
  *
  *  Modification:
- *  Author:			Gary J. Minden
+ *  Author:			Gary J. Minden, Katie Hrenchir, Kate Ramge
  *  Organization:		KU/EECS/EECS 690
- *  Date:			2017-09-17 (B70917)
+ *  Date:			2017-09-17 (B70917) - 2018-09-10
  *  Description:	(1) Added a C_Format capability
  *  				(2) Added an output type specifier for int32_t or
  *  					float. The output type for a specific
@@ -51,7 +51,7 @@ extern QueueHandle_t ReportData_Queue = NULL;
 //
 //	Define output format and subroutine to set output format.
 //
-ReportData_OutputFormat		ReportData_CurrentFormat = Mathematica_List;
+ReportData_OutputFormat		ReportData_CurrentFormat = Excel_CSV;
 
 extern void ReportData_SetOutputFormat( ReportData_OutputFormat newFormat ) {
 
@@ -65,6 +65,9 @@ extern void ReportData_SetOutputFormat( ReportData_OutputFormat newFormat ) {
 #define		FormattedStringSize	10
 
 extern void Task_ReportData( void *pvParameters ) {
+
+	// The following variables deal with the size and formatting of the memory address
+	// that will be taken from the PC (program counter)
 
 	ReportData_Item			theReport;
 	BaseType_t				ReportQueue_Status;
@@ -85,10 +88,12 @@ extern void Task_ReportData( void *pvParameters ) {
 	UARTprintf( ">>>>ReportData: Initializing.\n" );
 
 	//
-	//	Define ReportData_Queue
+	//	Define ReportData_Queue - length of 10, able to hold all of ReportData_Item
 	//
 	ReportData_Queue = xQueueCreate( 10, sizeof( ReportData_Item ) );
 
+
+	// Note: QueueHandle_t is a type that is returned when ReportData_Queue is called
 	UARTprintf( ">>>>ReportData: Queue Handle: %p\n", ReportData_Queue );
 
 	while ( 1 )	{
@@ -99,12 +104,16 @@ extern void Task_ReportData( void *pvParameters ) {
 		//	If a ReportData_Item is returned, print the contents
 		//		to the UART via UARTStdioPrintf
 		//
+		// portTICK_PERIOD_MS is used to calculate the real time based on the ticks
+		// 
 		ReportQueue_Status = xQueueReceive( ReportData_Queue,
 											&theReport,
 											1 * portTICK_PERIOD_MS );
 
 //		UARTprintf( ">>>>ReportData: Queue Receive: %d\n", ReportQueue_Status );
 
+
+		// pdTRUE is a means the item was successfully returned from the queue
 
 		if ( ReportQueue_Status == pdTRUE ) {
 
@@ -173,6 +182,7 @@ extern void Task_ReportData( void *pvParameters ) {
 
 		} //end if
 
+		// Delay for 100 ticks (I am guessing this is equal to 10ms?)
 		vTaskDelay( 100 );
 
 	} //end while
