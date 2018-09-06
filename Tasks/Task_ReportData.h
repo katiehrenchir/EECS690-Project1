@@ -6,13 +6,13 @@
  *
  *  Description:	Transmits data via UART to PC.
  *
- *  Modification:	2016-09-22 (B60922)
- *  				Changed number of value to 4 from 2.
+ *  Modification:	2018-09-10 
+ * 						Added SysTick
  *
  *  Modification:
- *  Author:			Gary J. Minden
+ *  Author:			Gary J. Minden, Katie Hrenchir, Kate Ramge
  *  Organization:		KU/EECS/EECS 690
- *  Date:			2017-09-17 (B70917)
+ *  Date:			2017-09-17 (B70917) 2018-09-10
  *  Description:	(1) Added a C_Format capability
  *  				(2) Added an output type, int32_t or
  *  					float.
@@ -38,6 +38,11 @@
 
 
 typedef enum { Excel_CSV, Mathematica_List, C_Format } ReportData_OutputFormat;
+
+//
+// Reference SysTickCount
+//
+extern volatile uint32_t xPortSysTickCount;
 
 //
 //	Define the ReportData Task subroutines
