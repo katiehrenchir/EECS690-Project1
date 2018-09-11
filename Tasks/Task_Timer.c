@@ -131,7 +131,7 @@ void Task_TimerInterrupt(void *pvParameters) {
          if ( CentiSeconds >= 100 ) {
              CentiSeconds = 0;
              Seconds++;
-             // If Seconds is a mutiple of 10, print the TOD
+             // If Seconds is a multiple of 10, print the TOD
              // at the end of the outer most if-statement
              if ( (Seconds % 10) == 0 ) {
                  bPrintTimeOfDay = true;
@@ -151,7 +151,7 @@ void Task_TimerInterrupt(void *pvParameters) {
              }
          }
          if ( bPrintTimeOfDay ) {
-             UARTprintf( "Time: %02d:%02d:%02d:%02d\n",
+             printf( "Time: %02d:%02d:%02d:%02d\n",
              Hours, Minutes, Seconds, CentiSeconds );
              bPrintTimeOfDay = false;
          }
