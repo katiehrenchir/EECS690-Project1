@@ -29,12 +29,9 @@
 extern void Task_Blink_LED_PortN_1( void *pvParameters );
 extern void Task_ReportTime( void *pvParameters );
 extern void Task_ReportData( void *pvParameters );
-extern void Task_Timer( void *pvParameters );
+extern void Task_TimerInterrupt( void *pvParameters );
 
 extern void Timer_0_A_ISR( void *pvParameters);
-
-
-
 
 //
 // UART 0 interrupt handler.
@@ -58,7 +55,7 @@ int main( void ) {
 	//
 	// Set the UART 0 interrupt handler.
 	//
-	IntRegister(INT_UART0, UART0Handler);
+	//IntRegister(INT_UART0, UART0Handler);
 
 
 	//
@@ -66,6 +63,12 @@ int main( void ) {
 	//
 	xTaskCreate( Task_Blink_LED_PortN_1, "Blinky", 32, NULL, 1, NULL );
 	
+    //
+    //  Create a task to use our Timer - should just print out the time?
+    //
+    xTaskCreate( Task_TimerInterrupt, "TimerInterrupt", 512, NULL, 1, NULL );
+
+
 	//
 	//	Create a task to report data.
 	//
@@ -88,3 +91,5 @@ int main( void ) {
 	}
 
 }
+
+
