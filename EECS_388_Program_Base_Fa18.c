@@ -1,5 +1,6 @@
 /*
  * main.c
+ * Katherine Ramge and Katie Hrenchir
  */
 
 #include	"inc/hw_ints.h"
@@ -28,11 +29,37 @@
 extern void Task_Blink_LED_PortN_1( void *pvParameters );
 extern void Task_ReportTime( void *pvParameters );
 extern void Task_ReportData( void *pvParameters );
+extern void Task_Timer( void *pvParameters );
+
+extern void Timer_0_A_ISR( void *pvParameters);
+
+
+
+
+//
+// UART 0 interrupt handler.
+//
+void UART0Handler(void) {
+//
+// Handle interrupt. This is where the hard part of the project comes into play -
+// probably some assembly code to reach into the program counter and extract the current
+// memory address, or some other weird trick to get that memory address information off the
+// stack where it was pushed at the interrupt.
+//
+
+}
 
 int main( void ) {
 
 	Processor_Initialization();
 	UARTStdio_Initialization();
+
+
+	//
+	// Set the UART 0 interrupt handler.
+	//
+	IntRegister(INT_UART0, UART0Handler);
+
 
 	//
 	//	Create a task to blink LED, PortN_1
@@ -49,25 +76,15 @@ int main( void ) {
 	//
 	xTaskCreate( Task_ReportTime, "ReportTime", 512, NULL, 1, NULL );
 
-	UARTprintf( "FreeRTOS Starting!\n" );
+	printf( "FreeRTOS Starting!\n" );
 
 	//
 	//	Start FreeRTOS Task Scheduler
 	//
-	vTaskStartScheduler(); //should never come back
-	//in ISR don't allocate local data *****
-	//TASK ISR and main portion *******
-	//create task for the ten microseconds
-	//create task for storing in heap
-	//create task for reporting results
-	while ( 1 ) { //Should never reach this while loop :(
-	        //Zero heap
-	        //loop for one minute
-	            //grab current memory address
-	            //store in heap
-	            //wait 10 micro seconds
-	        //report results
-	        Task_ReportData();
+	vTaskStartScheduler();
+
+	while ( 1 ) {
+
 	}
 
 }
