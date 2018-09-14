@@ -16,6 +16,7 @@
 #include	"driverlib/sysctl.h"
 #include	"driverlib/pin_map.h"
 #include	"driverlib/gpio.h"
+#include    "driverlib/interrupt.h"
 
 #include	"Drivers/Processor_Initialization.h"
 #include	"Drivers/UARTStdio_Initialization.h"
@@ -31,20 +32,6 @@ extern void Task_ReportTime( void *pvParameters );
 extern void Task_ReportData( void *pvParameters );
 extern void Task_TimerInterrupt( void *pvParameters );
 
-extern void Timer_0_A_ISR( void *pvParameters);
-
-//
-// UART 0 interrupt handler.
-//
-void UART0Handler(void) {
-//
-// Handle interrupt. This is where the hard part of the project comes into play -
-// probably some assembly code to reach into the program counter and extract the current
-// memory address, or some other weird trick to get that memory address information off the
-// stack where it was pushed at the interrupt.
-//
-
-}
 
 int main( void ) {
 
@@ -52,32 +39,33 @@ int main( void ) {
 	UARTStdio_Initialization();
 
 
-	//
-	// Set the UART 0 interrupt handler.
-	//
-	//IntRegister(INT_UART0, UART0Handler);
+	//set up histogram and zero it out
+	//have it set up to collect 1 minute worth of data
+	// then every 10 us instead of doing an interrupt,
+	//then (generate a random number between 1 and ??)
+	//then use that to generate the csv etc... THEN worry about the asm code
 
-
-	//
 	//	Create a task to blink LED, PortN_1
+	//  DO NOT REMOVE BLINKY FROM THIS PROJECT
 	//
 	xTaskCreate( Task_Blink_LED_PortN_1, "Blinky", 32, NULL, 1, NULL );
 	
     //
-    //  Create a task to use our Timer - should just print out the time?
+    //  Create a task to use our Timer
     //
     xTaskCreate( Task_TimerInterrupt, "TimerInterrupt", 512, NULL, 1, NULL );
+    bool collectData = true;
+    //vTaskDelay(60000);
+    printf("1 minute is up");
+    collectData = false;
+    //dump data into histogram
+    ///Debug/_____.map to see where in the memory each thing is
+    // (bin index * 64) ---> convert to hex is the memory address for the bin
 
+    //to dump data, it's okay to just print to the console and copy/paste so long as the
+    // data is collected
 
-	//
-	//	Create a task to report data.
-	//
-	xTaskCreate( Task_ReportData, "ReportData", 512, NULL, 1, NULL );
-
-	//
-	//	Create a task to report SysTickCount
-	//
-	xTaskCreate( Task_ReportTime, "ReportTime", 512, NULL, 1, NULL );
+    //or you can go through the trouble of exporting to csv or mathematica or the like
 
 	printf( "FreeRTOS Starting!\n" );
 
